@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.*?> 
+
+
+<VBox fx:controller = "controller.SuperMarketController" styleClass="background" prefHeight="500.0" prefWidth="700.0" spacing="10"
+          xmlns:fx="http://javafx.com/fxml">
+    <Label text="Filters" styleClass='label-header' />
+    <HBox alignment = "CENTER" spacing ="10">
+        <Label text="Name:"/>
+        <TextField fx:id="namefilter" promptText="Filter by name" />
+        <Label text="Email:"/>
+        <TextField fx:id="emailfilter" promptText="Filter by email"/>
+    </HBox>
+    <TableView fx:id="membershipsTv">
+        <placeholder>
+            <Label text="Memberships list is not loaded"/>
+        </placeholder>
+		<columns>
+			<TableColumn fx:id ="name" text="Name" prefWidth= "230">
+				<cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Email" prefWidth= "230">
+				<cellValueFactory><PropertyValueFactory property="email"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Phone" prefWidth= "230">
+				<cellValueFactory><PropertyValueFactory property="phone"/></cellValueFactory>
+			</TableColumn>
+		</columns>
+	</TableView>
+    <HBox spacing ="10" alignment = "CENTER">
+        <Button text = "Add" onAction="#handleAdd"/>
+        <Button fx:id = "deleteButton" text = "Delete" onAction="#handleDelete"/>
+        <Button fx:id = "selectButton" text = "Select" onAction="#handleSelect"/>
+        <Button fx:id = "SLIPButton" text = "SLIP" onAction="#handleSLIP"/>
+        <Button text = "Report" onAction="#handleReport"/>
+        <Button text = "Close" onAction="#handleClose"/>
+    </HBox>
+    <stylesheets>
+        <URL value="@mmsfx.css"/>
+    </stylesheets>
+</VBox>
+ 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.*?> 
+<?import javafx.scene.shape.*?> 
+
+<VBox fx:controller = "controller.MembershipController" styleClass="background" prefHeight="500.0" prefWidth="700.0" spacing="20"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets top="10" bottom="10" left="100" right="100" />
+    </padding>
+    <Label text="Personal Details" styleClass='label-header'  />
+    <HBox alignment = "CENTER_LEFT" spacing = "100">
+    <VBox>   
+        <Label text="Name:"  />
+        <Label text="Email:"  />
+        <Label text="Phone:"  />
+        <Label text="Address:"  />
+    </VBox>
+    <VBox spacing = "10">
+        <TextField fx:id="Name" prefWidth="300"/>
+        <TextField fx:id="Email"  prefWidth="300"/>
+        <TextField fx:id="Phone"  prefWidth="300"/>
+        <TextField fx:id="Address"  prefWidth="300"/>
+    </VBox>
+    </HBox>
+    <Label text="Membership Details" styleClass='label-header' />
+        <HBox alignment = "CENTER_LEFT" spacing = "100">
+    <VBox>   
+        <Label text="ID:"  />
+        <Label text="Expense:"  />
+        <Label text="Type:"  />
+    </VBox>
+    <VBox spacing = "10">
+        <TextField fx:id="ID" prefWidth="300"/>
+        <TextField fx:id="Expense"  prefWidth="300"/>
+        <Label fx:id ="type" text ="None"/>
+    </VBox>
+    </HBox>
+    <HBox spacing = "10" alignment="CENTER" >
+        <Button fx:id ="AddButton" text = "Add" onAction="#handleUpdate"/>
+        <Button fx:id ="UpdateButton" text = "Update" onAction="#handleUpdate"/>
+        <Button fx:id ="CloseButton" text = "Close" onAction="#handleClose"/>
+    </HBox>
+    <stylesheets>
+        <URL value="@mmsfx.css"/>
+    </stylesheets>
+</VBox>

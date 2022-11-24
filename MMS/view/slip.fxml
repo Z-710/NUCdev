@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.*?> 
+<?import javafx.scene.shape.*?> 
+
+<VBox fx:controller = "controller.MMSlipController" prefHeight="350.0" prefWidth="550.0" styleClass="background"   
+          xmlns:fx="http://javafx.com/fxml/1" >
+    <Label text = "Membership Slip" styleClass = "label-header"/>
+    <padding>
+        <Insets top="50" bottom="10" left="10" right="10" />
+    </padding>
+    <HBox spacing = "10">
+    <VBox>
+        <Label text = "Total Credits:"/>
+        <Label text = "Total Expense:"/>
+        <Label text = "Gasdeduction Rate:"/>  
+    </VBox>
+    <VBox>
+        <Label fx:id ="creditLbl"/>        
+        <Label fx:id ="expenseLbl"/>
+        <Label fx:id ="gasdeductionLbl"/>  
+    </VBox>
+    <VBox>
+        <Label text = "Pay Per Credit:"/>
+        <Label text = "Dollar Available"/>       
+        <Label text = "Deduction Rate:"/>       
+    </VBox>
+    <VBox>
+        <Label fx:id ="paypercreditLbl"/>
+        <Label fx:id ="dollaravailableLbl"/>
+        <Label fx:id ="deductionLbl"/>
+    </VBox>
+    </HBox>
+    <VBox spacing = "30">
+    <Label/>
+    <VBox alignment = "CENTER">
+    <Button text="Close" onAction="#handleClose"/>
+    </VBox>
+    </VBox>
+    <stylesheets>
+        <URL value="@mmsfx.css"/>
+    </stylesheets>
+</VBox>

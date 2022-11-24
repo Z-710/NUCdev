@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+
+    <VBox fx:controller = "controller.SessionController" xmlns:fx="http://javafx.com/fxml/1"
+        spacing="10" styleClass="background" prefHeight="250.0" prefWidth="300.0">
+        <Label text = "Login"  styleClass="label-header"/>
+        <HBox>
+            <VBox >
+                <Label  text = "Email:"/>
+                <Label  text = "Password:"/>    
+            </VBox>
+            <VBox spacing = '15'>
+                <TextField fx:id="email"/>
+                <TextField fx:id="password"/>
+                <Label fx:id= "incorrect" text  = "" alignment = "CENTER" styleClass = "label-error"/>
+                <HBox spacing = "5" alignment="CENTER">
+                    <Button text = "Login" onAction="#handleLoginCheck"/>
+                    <Button text = "Exit" onAction="#handleExit"/>
+                </HBox>
+            </VBox>
+        </HBox>
+        
+          
+          <stylesheets>
+              <URL value="@mmsfx.css"/>
+          </stylesheets>
+    </VBox>
