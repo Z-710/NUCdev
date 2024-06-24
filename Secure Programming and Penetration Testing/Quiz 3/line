@@ -1,0 +1,8 @@
+openssl enc -aes-256-cbc -nosalt -e -in secret.txt -out secret.txt.enc -K ':Þh±' -iv '5a04ec902686fb05a6b7a338b6e07760' 
+openssl enc -aes-256-cbc -nosalt -e -in secret.txt -out secret.txt.enc -K '3ade68b1' -iv '5a04ec902686fb05a6b7a338b6e07760' 
+openssl enc -aes-256-cbc -nosalt -e -in secret.txt -out secret.txt.enc -K '987654321' -iv '5a04ec902686fb05a6b7a338b6e07760' 
+
+
+
+openssl enc -aes-256-cbc -nosalt -d -in secret.txt.enc -out secret_decrypted.txt -K '987654321' -iv '5a04ec902686fb05a6b7a338b6e07760'
+openssl enc -aes-256-cbc -nosalt -d -in secret.txt -out secret_decrypted.txt -K '987654321' -iv '5a04ec902686fb05a6b7a338b6e07760'

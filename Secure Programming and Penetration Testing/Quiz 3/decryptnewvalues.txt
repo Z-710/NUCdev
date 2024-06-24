@@ -1,0 +1,3 @@
+SHA256 hash of the plaintext: 53330214b0f06a37299452210aa579890d566660d9ccc160a5a64119cfc7437a
+
+plaintext: b"is awkward isn't it... I told them it'd be ready by today, but that doesn't look like it's happening. Apparently 'she' isn't quite ready to initiate the attack yet anyway though - wants to wait for her DIL to be in the right position or something? Anyway, the malware will be ready soon, prepare for a sample soon. Also someone seems to have started scanning our net"
