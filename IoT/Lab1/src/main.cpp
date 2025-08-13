@@ -1,42 +1,65 @@
 #include <Arduino.h>
 
-// LED bar pins
+// --- CONFIG ---
+#define DEBOUNCE_MS 12   // change this to find the minimum 
+
+// LED bar pins (ESP32-safe set)
 byte ledPins[] = {15, 2, 0, 4, 5, 18, 19, 21, 22, 23};
 const int ledCount = sizeof(ledPins) / sizeof(ledPins[0]);
 
-// Pushbutton pins (active LOW)
-const int BTN_PLUS  = 25; 
-const int BTN_MINUS = 26; 
-const int BTN_MUTE  = 27; 
+// Pushbuttons (active-LOW, using internal pull-ups)
+const int BTN_PLUS  = 25;
+const int BTN_MINUS = 26;
+const int BTN_MUTE  = 27;
 
 // Volume state
-int volume = 5;        // start level
-int savedVolume = 5;   // for mute toggle
+int volume = 5;
+int savedVolume = 5;
 bool muted = false;
 
+// --- Simple non-blocking debouncer (per button) ---
+struct Debounce {
+  int pin;
+  int lastReading;
+  int stableState;            // debounced state
+  unsigned long lastChange;   // last time the raw reading flipped
+};
+
+Debounce bPlus  {BTN_PLUS,  HIGH, HIGH, 0};
+Debounce bMinus {BTN_MINUS, HIGH, HIGH, 0};
+Debounce bMute  {BTN_MUTE,  HIGH, HIGH, 0};
+
+bool pressedOnce(Debounce &d) {
+  unsigned long now = millis();
+  int raw = digitalRead(d.pin);
+  if (raw != d.lastReading) {
+    d.lastChange = now;            // reading changed: restart debounce timer
+  }
+  if ((now - d.lastChange) >= DEBOUNCE_MS && raw != d.stableState) {
+    d.stableState = raw;           // debounced state just changed
+    d.lastReading = raw;
+    return (d.stableState == LOW); // report a press exactly once per physical press
+  }
+  d.lastReading = raw;
+  return false;
+}
+
+// --- UI ---
 void renderVolume() {
   int showCount = muted ? 0 : volume;
   for (int i = 0; i < ledCount; i++) {
     digitalWrite(ledPins[i], (i < showCount) ? HIGH : LOW);
   }
-
-  // Print LED state to Serial Monitor
-  Serial.print("LEDs ON: ");
-  for (int i = 0; i < ledCount; i++) {
-    Serial.print((i < showCount) ? "█" : "-");
-  }
-  Serial.print("   Volume: ");
-  Serial.print(volume);
-  Serial.print("   Saved: ");
-  Serial.print(savedVolume);
-  Serial.print("   Muted: ");
-  Serial.println(muted ? "YES" : "NO");
+  Serial.print("LEDs: ");
+  for (int i = 0; i < ledCount; i++) Serial.print((i < showCount) ? "█" : "-");
+  Serial.print("  Vol: ");  Serial.print(volume);
+  Serial.print("  Saved: ");Serial.print(savedVolume);
+  Serial.print("  Muted: ");Serial.print(muted ? "YES" : "NO");
+  Serial.print("  (DEBOUNCE_MS="); Serial.print(DEBOUNCE_MS); Serial.println(")");
 }
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Volume Bar Test Starting...");
-
   for (int i = 0; i < ledCount; i++) {
     pinMode(ledPins[i], OUTPUT);
     digitalWrite(ledPins[i], LOW);
@@ -46,35 +69,34 @@ void setup() {
   pinMode(BTN_MINUS, INPUT_PULLUP);
   pinMode(BTN_MUTE,  INPUT_PULLUP);
 
+  // Init debouncers with current readings
+  bPlus.lastReading  = bPlus.stableState  = digitalRead(BTN_PLUS);
+  bMinus.lastReading = bMinus.stableState = digitalRead(BTN_MINUS);
+  bMute.lastReading  = bMute.stableState  = digitalRead(BTN_MUTE);
+
   renderVolume();
 }
 
 void loop() {
-  // Increase volume
-  if (digitalRead(BTN_PLUS) == LOW) {
+  if (pressedOnce(bPlus)) {
     if (!muted && volume < ledCount) volume++;
     if (muted && savedVolume < ledCount) savedVolume++;
-    Serial.println("Button PLUS pressed");
+    Serial.println("PLUS press detected");
     renderVolume();
-    delay(200);
   }
 
-  // Decrease volume (min 1 LED)
-  if (digitalRead(BTN_MINUS) == LOW) {
+  if (pressedOnce(bMinus)) {
     if (!muted && volume > 1) volume--;
     if (muted && savedVolume > 1) savedVolume--;
-    Serial.println("Button MINUS pressed");
+    Serial.println("MINUS press detected");
     renderVolume();
-    delay(200);
   }
 
-  // Mute toggle
-  if (digitalRead(BTN_MUTE) == LOW) {
+  if (pressedOnce(bMute)) {
     muted = !muted;
     if (muted) savedVolume = volume;
-    else volume = savedVolume;
-    Serial.println("Button MUTE pressed");
+    else       volume = savedVolume;
+    Serial.println("MUTE press detected (toggle mute)");
     renderVolume();
-    delay(200);
   }
 }
